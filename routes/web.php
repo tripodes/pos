@@ -20,3 +20,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('categorias','CategoriaController');
+
+Route::resource('empresa','EmpresaController', ['except' => ['create', 'store', 'destroy']]);
