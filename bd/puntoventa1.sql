@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `puntoventa` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `puntoventa`;
--- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for macos10.12 (x86_64)
 --
--- Host: 127.0.0.1    Database: puntoventa
+-- Host: localhost    Database: puntoventa
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.28-MariaDB
+-- Server version	5.5.5-10.1.32-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -57,7 +57,7 @@ CREATE TABLE `categoria` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +66,6 @@ CREATE TABLE `categoria` (
 
 LOCK TABLES `categoria` WRITE;
 /*!40000 ALTER TABLE `categoria` DISABLE KEYS */;
-INSERT INTO `categoria` VALUES (1,'Herramienta',1,'2019-04-26 01:49:26','2019-04-26 01:49:26');
 /*!40000 ALTER TABLE `categoria` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +120,7 @@ CREATE TABLE `empresa` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +129,6 @@ CREATE TABLE `empresa` (
 
 LOCK TABLES `empresa` WRITE;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` VALUES (1,'Tripode Systemas',NULL,'Ipala, Chiquimula',NULL,NULL,'Mauricio Espa',NULL,NULL,NULL,NULL,'2019-04-30 17:16:26','2019-05-01 08:21:19');
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,6 +163,23 @@ LOCK TABLES `fac_det` WRITE;
 /*!40000 ALTER TABLE `fac_det` DISABLE KEYS */;
 /*!40000 ALTER TABLE `fac_det` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `dis_existencia` AFTER INSERT ON `fac_det` FOR EACH ROW begin
+	update producto set existencia=existencia-new.cantidad where id_producto=new.id_producto;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `fac_enc`
@@ -235,7 +250,7 @@ CREATE TABLE `migrations` (
   `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -244,7 +259,7 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (9,'2019_02_25_215554_create_categorias_table',2),(23,'2019_02_27_220249_agrega_columnas_de_registro_a_todas_las_tablas',3),(32,'2014_10_12_000000_create_users_table',4),(33,'2014_10_12_100000_create_password_resets_table',4);
+INSERT INTO `migrations` VALUES (9,'2019_02_25_215554_create_categorias_table',2),(21,'2014_10_12_000000_create_users_table',3),(22,'2014_10_12_100000_create_password_resets_table',3),(23,'2019_02_27_220249_agrega_columnas_de_registro_a_todas_las_tablas',3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -305,6 +320,23 @@ LOCK TABLES `pedido` WRITE;
 /*!40000 ALTER TABLE `pedido` DISABLE KEYS */;
 /*!40000 ALTER TABLE `pedido` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `agr_existencia` AFTER INSERT ON `pedido` FOR EACH ROW begin
+	update producto set existencia=existencia+new.cantidad where id_producto=new.id_producto;
+end */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `perfil`
@@ -469,13 +501,13 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `nombres` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apellidos` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `direccion` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `apellidos` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `telefono` int(11) DEFAULT NULL,
-  `usuario` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `id_perfil` int(11) NOT NULL,
+  `direccion` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_perfil` int(11) DEFAULT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -483,7 +515,9 @@ CREATE TABLE `users` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `users_usuario_unique` (`usuario`)
+  UNIQUE KEY `users_email_unique` (`email`),
+  KEY `fk_usuario_perfil` (`id_perfil`),
+  CONSTRAINT `fk_usuario_perfil` FOREIGN KEY (`id_perfil`) REFERENCES `perfil` (`id_perfil`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -493,9 +527,85 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'Carlos Mauricio','España y España','Ipala, Chiquimula',59451640,'Charlie',1,'mauricio.espana.3@gmail.com',NULL,'$2y$10$Ih9G4nIXHdfE1TmTpxJKre6kL8KfOeXWmWbFfucern6hIXPNekvdq',NULL,'2019-04-30 22:01:37','2019-04-30 22:01:37');
+INSERT INTO `users` VALUES (1,'Carlos Mauricio','España y España',59451640,'Barrio las Flores',1,'Charlie','mauricio.espana.3@gmail.com',NULL,'$2y$10$dXJTXKyc1rW5iVi7N/WxTeDWnT.WHuNAvnjkv11y6ePlqZ.sJ5dxC','Leq1J7PkEca0B2nlaongKH1VrJMdHj0K4sV9PCR2WGbNF8GZPHPANCqSefvv','2019-02-26 20:31:37','2019-02-26 20:31:37');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario`
+--
+
+DROP TABLE IF EXISTS `usuario`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usuario` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `apellidos` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `telefono` int(11) NOT NULL,
+  `direccion` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id_perfil` int(11) NOT NULL,
+  `usuario` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usuario_usuario_unique` (`usuario`),
+  UNIQUE KEY `usuario_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario`
+--
+
+LOCK TABLES `usuario` WRITE;
+/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
+/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuario2`
+--
+
+DROP TABLE IF EXISTS `usuario2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `usuario2` (
+  `id_usuario` int(11) NOT NULL AUTO_INCREMENT,
+  `nombres` varchar(50) DEFAULT NULL,
+  `apellidos` varchar(50) DEFAULT NULL,
+  `telefono` int(11) DEFAULT NULL,
+  `direccion` varchar(100) DEFAULT NULL,
+  `usuario` varchar(20) DEFAULT NULL,
+  `contrasena` varchar(50) DEFAULT NULL,
+  `id_perfil` int(11) DEFAULT NULL,
+  `activo` tinyint(4) DEFAULT NULL,
+  PRIMARY KEY (`id_usuario`),
+  KEY `fk_usuario_perfil` (`id_perfil`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuario2`
+--
+
+LOCK TABLES `usuario2` WRITE;
+/*!40000 ALTER TABLE `usuario2` DISABLE KEYS */;
+INSERT INTO `usuario2` VALUES (1,'Carlos Mauricio','EspaÃ±a y EspaÃ±a',59451640,'Ipala, Chiquimula','Mauricio','202cb962ac59075b964b07152d234b70',1,1),(2,'Charlie','Spain',12345678,'Ipala, Chiquimula','Charlie','b30731c3fe009a48293ea85daced328f',4,1);
+/*!40000 ALTER TABLE `usuario2` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'puntoventa'
+--
+
+--
+-- Dumping routines for database 'puntoventa'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -506,4 +616,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-30 20:28:26
+-- Dump completed on 2019-02-27 22:19:53

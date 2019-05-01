@@ -13,7 +13,7 @@
 		<tr>
 			<td>{{$categoria->id_categoria}}</td>
 			<td>{{$categoria->descripcion}}</td>
-			<td><a href="/categorias/{{$categoria->id_categoria}}" class="btn btn-info">Ver</a></td>
+			<th><a href="/categorias/{{$categoria->id_categoria}}" class="btn btn-info">Ver</a></th>
 			<td><a href="/categorias/{{$categoria->id_categoria}}/edit" class="btn btn-warning">Editar</a></td>
 			<form action="/categorias/{{$categoria->id_categoria}}" method="post">
 				@csrf

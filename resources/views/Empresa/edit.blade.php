@@ -16,5 +16,6 @@
 		<tr><td><label for="iva_servicio">IVA del Servicio</label></td><td><input type="text" name="iva_servicio" value="{{$empresa->iva_servicio}}" class="form-control"></td></tr>
 	</table>
 	<button class="btn btn-success" type="submit">Actualizar</button>
+	<a href=" {{ action('EmpresaController@index') }} " class="btn btn-secondary">Regresar</a>
 </form>
 @endsection

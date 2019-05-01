@@ -5,7 +5,6 @@
 		<div class="row col-md-8">
 		<table class="table table-striped">
 			@foreach($empresa as $emp)
-				<tr><td>ID</td><td>{{ $emp->id_empresa }}</td></tr>
 				<tr><td>Nombre</td><td>{{ $emp->nombre }}</td></tr>
 				<tr><td>Nit</td><td>{{ $emp->nit }}</td></tr>
 				<tr><td>Dirección</td><td>{{ $emp->direccion }}</td></tr>

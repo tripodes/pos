@@ -52,7 +52,9 @@ class CategoriaController extends Controller
      */
     public function show($id)
     {
-        //
+        // return view('categorias.show',compact('categoria'));
+        $categoria = Categoria::where('id_categoria','=',$id)->firstOrFail();
+        return view('categorias.show',compact('categoria'));
     }
 
     /**
