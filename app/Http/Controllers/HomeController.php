@@ -23,6 +23,9 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // $user = Auth::user();
+        // $rol = $user->roles->implode('name',',');
+        // dd($rol);
         return view('home');
     }
 }

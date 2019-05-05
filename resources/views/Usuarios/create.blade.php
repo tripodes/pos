@@ -5,12 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Registro') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="/usuarios">
                         @csrf
-
                         <div class="form-group row">
                             <label for="nombres" class="col-md-4 col-form-label text-md-right">{{ __('Nombres') }}</label>
 
@@ -82,10 +81,14 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="perfil" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
+                            <label for="rol" class="col-md-4 col-form-label text-md-right">{{ __('Perfil') }}</label>
 
                             <div class="col-md-6">
-                                <input id="id_perfil" type="text" class="form-control @error('id_perfil') is-invalid @enderror" name="id_perfil" value="{{ old('id_perfil') }}" required autocomplete="id_perfil" autofocus>
+                                <select class="form-control" name="rol">
+                                  @foreach ($roles as $key => $value)
+                                    <option value="{{ $key }}">{{$value}}</option>
+                                  @endforeach
+                                </select>
 
                                 @error('id_perfil')
                                     <span class="invalid-feedback" role="alert">
