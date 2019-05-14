@@ -16,14 +16,14 @@ mix.js('resources/js/app.js', 'public/js')
 */
 mix.scripts([
 	'resources/js/jquery-3.3.1.min.js',
-	'resources/js/boostrap.min.js',
+	'resources/js/bootstrap.min.js',
 	'resources/js/toastr.js',
 	'resources/js/vue.js',
 	'resources/js/axios.js',
 	'resources/js/app.js',
 	], 'public/js/app.js').
 styles([
-	'resources/css/boostrap.min.css',
+	'resources/css/bootstrap.min.css',
 	'resources/css/toastr.css',
 	'resources/css/app.css',
 	], 'public/css/app.css');
