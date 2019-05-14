@@ -88,6 +88,8 @@ class UserController extends Controller
     public function update(Request $request, User $usuario)
     {
         $usuario->fill($request->all());
+        $request->except('password');
+        $usuario->password=bcrypt($request->password);
         if($usuario->save()){
           $usuario->syncRoles($request->rol);
         }
