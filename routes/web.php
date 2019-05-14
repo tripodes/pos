@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//use App\Cliente;
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,3 +25,12 @@ Route::resource('categorias','CategoriaController');
 Route::resource('empresa','EmpresaController', ['except' => ['create', 'store', 'destroy']]);
 
 Route::resource('usuarios','UserController');
+
+Route::resource('facturas','FacturaController');
+
+Route::resource('clientes','ClienteController');
+
+// Route::get('clientes',function(){
+// 	$clientes = Cliente::get();
+// 	return $clientes;
+// });
