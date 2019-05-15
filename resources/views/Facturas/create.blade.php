@@ -19,15 +19,15 @@
           </div>
           <div class="col-md-2">
     				<label for="nit">Nit</label>
-    				<input type="text" name="nit" class="form-control" v-model="obtener.nit">
+    				<input type="text" name="nit" class="form-control" v-model="cnit">
           </div>
           <div class="col-md-4">
             <label for="cliente">Cliente</label>
-            <input type="text" name="cliente" class="form-control" v-model="obtener.nombre">
+            <input type="text" name="cliente" class="form-control" v-model="cnombre">
           </div>
           <div class="col-md-4">
             <label for="direccion">Direccion</label>
-            <input type="text" name="direccion" class="form-control" v-model="obtener.direccion">
+            <input type="text" name="direccion" class="form-control" v-model="cdireccion">
           </div>
         </div>
 			</div>
@@ -48,17 +48,18 @@
       <div class="modal-body">
         <table class="table table-striped">
         	<thead>
+            <td class="hide"></td>
         		<td>Nit</td>
         		<td>Nombre</td>
         		<td>Direccion</td>
             <td>Accion</td>
         	</thead>
         	<tbody>
-            <tr v-for="cliente of clientes">
+            <tr v-for="cliente of clientes" :key="cliente.id_cliente">
               <td>@{{cliente.nit}}</td>
               <td>@{{cliente.nombre}}</td>
               <td>@{{cliente.direccion}}</td>
-              <td><a href="" class="btn btn-primary" v-on:click="darClientes">Seleccionar</a></td>
+              <td><a href="" class="btn btn-primary" v-on:click="verCliente(cliente.id_cliente)">Seleccionar</a></td>
             </tr>
         	</tbody>
         </table>

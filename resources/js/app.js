@@ -42,6 +42,9 @@
 //   }
 // });
 
+
+var url = 'http://localhost:8000/';
+var urlClientes = url + 'clientes';
 new Vue({
   el: '#ModalCliente',
   created: function(){
@@ -49,19 +52,27 @@ new Vue({
   },
   data: {
     clientes: [
-      {nit: '', nombre: '', direccion: ''}
+    {nit: '',  nombre: '', direccion: ''}
     ],
-    obtener: [
-      {nit: '', nombre: '', direccion: ''}
+    cli: [
+    {nit: '',  nombre: '', direccion: ''}
     ],
   },
   methods:
   {
     getClientes(){
-      var urlClientes = 'http://localhost:8000/clientes';
       axios.get(urlClientes).then(response => {
         this.clientes = response.data
       });
     },
+    verCliente(clientes){
+      var verid = urlClientes + '/' + clientes;
+      this.cli.push({
+        nit: clientes.nit,
+        nombre: clientes.nombre,
+        direccion: clientes.direccion
+      });
+      console.log(clientes.nit);
+    }
   }
 })
