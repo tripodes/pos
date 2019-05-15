@@ -19,7 +19,7 @@
 // 				this.getKeeps(); //
 // 				toastr.success('Eliminado Correctamente');
 // 			});
-// 		}	
+// 		}
 // 	}
 // });
 
@@ -54,9 +54,9 @@ new Vue({
     clientes: [
     {nit: '',  nombre: '', direccion: ''}
     ],
-    cli: [
-    {nit: '',  nombre: '', direccion: ''}
-    ],
+    clinit: '',
+    clinombre: '',
+    clidireccion: ''
   },
   methods:
   {
@@ -65,14 +65,10 @@ new Vue({
         this.clientes = response.data
       });
     },
-    verCliente(clientes){
-      var verid = urlClientes + '/' + clientes;
-      this.cli.push({
-        nit: clientes.nit,
-        nombre: clientes.nombre,
-        direccion: clientes.direccion
-      });
-      console.log(clientes.nit);
+    verCliente(cid,cnit,cnom,cdir){
+      var verid = urlClientes + '/' + cid;
+      //alert(cid + ' ' + cnit + ' ' + cnom + ' ' + cdir);
+      this.clinit = cnit;
     }
   }
 })

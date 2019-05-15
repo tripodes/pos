@@ -19,15 +19,15 @@
           </div>
           <div class="col-md-2">
     				<label for="nit">Nit</label>
-    				<input type="text" name="nit" class="form-control" v-model="cnit">
+    				<input type="text" name="nit" id="idnit" class="form-control" v-model="clinit">
           </div>
           <div class="col-md-4">
             <label for="cliente">Cliente</label>
-            <input type="text" name="cliente" class="form-control" v-model="cnombre">
+            <input type="text" name="cliente" class="form-control" v-model="clinombre">
           </div>
           <div class="col-md-4">
             <label for="direccion">Direccion</label>
-            <input type="text" name="direccion" class="form-control" v-model="cdireccion">
+            <input type="text" name="direccion" class="form-control" v-model="clidireccion">
           </div>
         </div>
 			</div>
@@ -48,7 +48,6 @@
       <div class="modal-body">
         <table class="table table-striped">
         	<thead>
-            <td class="hide"></td>
         		<td>Nit</td>
         		<td>Nombre</td>
         		<td>Direccion</td>
@@ -59,7 +58,7 @@
               <td>@{{cliente.nit}}</td>
               <td>@{{cliente.nombre}}</td>
               <td>@{{cliente.direccion}}</td>
-              <td><a href="" class="btn btn-primary" v-on:click="verCliente(cliente.id_cliente)">Seleccionar</a></td>
+              <td><a href="" class="btn btn-primary" v-on:click="verCliente(cliente.id_cliente,cliente.nit,cliente.nombre,cliente.direccion)">Seleccionar</a></td>
             </tr>
         	</tbody>
         </table>
