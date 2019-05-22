@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use App\fac_enc;
 use App\Cliente;
+use App\Producto;
+
 
 class FacturaController extends Controller
 {
@@ -29,7 +32,21 @@ class FacturaController extends Controller
     {
         $facturas = fac_enc::all();
         $clientes = Cliente::all();
-        return view('facturas.create',compact('facturas','clientes'));
+        $result = DB::table('fac_enc')
+            ->select(DB::raw('id_fac_enc, 1 as nofac'))
+            ->rightJoin('cliente', 'cliente.id_cliente', '=', 'fac_enc.id_cliente')
+            ->groupBy('id_fac_enc')
+            ->get();
+        $productos = DB::table('producto')
+        ->select(DB::raw('producto.id_producto as id, producto.descripcion as prod, marca.descripcion as marca, categoria.descripcion as categoria'))
+            ->join('marca','marca.id_marca','=','producto.id_marca')
+            ->join('categoria','categoria.id_categoria','=','producto.id_categoria')
+            //->select('producto.id_producto as id', 'producto.descripcion as prod', 'marca.descripcion as marca', 'categoria.descripcion as categoria')
+            ->where('producto.descripcion', 'like', '%%')
+            ->orWhere('marca.descripcion', 'like', '%%')
+            ->orWhere('categoria.descripcion', 'like', '%%')
+            ->get();
+        return view('facturas.create',compact('facturas','clientes','result','productos'));
     }
 
     /**
