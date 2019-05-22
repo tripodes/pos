@@ -78,5 +78,6 @@
             </div>
         </main>
     </div>
+        @yield('jscript')
 </body>
 </html>
