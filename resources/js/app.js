@@ -67,8 +67,9 @@ new Vue({
       });
     },
     verCliente(index){
-      this.cnit = this.clientes[index].nombre;
-      console.log(this.cnit)
+      this.cnit = this.clientes[index].nit;
+      this.cnom = this.clientes[index].nombre;
+      this.cdir = this.clientes[index].direccion;
     },
     getProductos(){
       axios.get(urlProductos).then(response => {

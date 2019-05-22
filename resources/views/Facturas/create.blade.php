@@ -21,7 +21,7 @@
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalCliente">Buscar Cliente
               </button>
             </span>
-            <input type="text" name="nit" class="form-control" v-model="cnom">  
+            <input type="text" name="cliente" class="form-control" v-model="cnom">  
           </div>
         </div>
       </div>
