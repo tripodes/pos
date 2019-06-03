@@ -50,14 +50,22 @@ new Vue({
   el: '#create_factura',
   created: function(){
     this.getClientes();
+    this.getProductos();
   },
   data: {
     clientes: [],
-    cli: [{nit: ''}],
     cnit: '',
     cnom: '',
     cdir: '',
-    productos: []
+    productos: [],
+    pre: '',
+    pro: '',
+    existencia: '',
+    busca: '',
+    cont: 0,
+    ListaProductos:[],
+    idpro: 0,
+    canti: ''
   },
   methods:
   {
@@ -75,7 +83,34 @@ new Vue({
       axios.get(urlProductos).then(response => {
         this.productos = response.data
       })
+    },
+    verProducto(producto){
+      this.idpro = producto.id_producto;
+      this.pro = producto.producto;
+      this.pre = producto.precio_venta;
+      this.existencia = producto.existencia;
+    },
+    agregarFila(){
+      //alert(this.idpro+' '+this.pre+' '+this.canti);
+      this.cont=this.cont+1;
+      document.getElementById("tablaproductos").insertRow(-1).innerHTML = '<tr id="'+this.cont+'"><td>'+this.pre+'</td><td>'+this.pro+'</td><td>'+this.canti+'</td><td><a href="#" class="btn btn-danger" onclick="eliminarFila();">-</a></td></tr>';
+    },
+    eliFila(){
+      var table = document.getElementById("tablaproductos");
+      var rowCount = table.rows.length;
+      //console.log(rowCount);
+    //   //
+    //   // if(rowCount <= 1)
+    //   //   alert('No se puede eliminar el encabezado');
+    //   // else
+    //   //   table.deleteRow(rowCount -1);
+    }
+  },
+  computed: {
+    FiltroProducto: function(){
+      return this.productos.filter((producto) => {
+        return producto.producto.match(this.busca);
+      });
     }
   }
 });
-

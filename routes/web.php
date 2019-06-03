@@ -30,11 +30,7 @@ Route::resource('facturas','FacturaController');
 
 Route::resource('clientes','ClienteController');
 
-Route::resource('productos','ProductoController');
-
-Route::get('/busqueda','BusquedaController@index');
-
-Route::post('/busqueda/fetch','BusquedaController@fetch')->name('busqueda.fetch');
+Route::resource('productos','VistaProductoController');
 
 // Route::get('clientes',function(){
 // 	$clientes = Cliente::get();

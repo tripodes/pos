@@ -3,14 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
-use App\fac_enc;
-use App\Cliente;
 use App\VistaProducto;
 
-
-class FacturaController extends Controller
+class VistaProductoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,8 +14,8 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $facturas = fac_enc::all();
-        return view('facturas.index',compact('facturas'));
+        $productos = VistaProducto::all();
+        return $productos;
     }
 
     /**
@@ -30,24 +25,7 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        $facturas = fac_enc::all();
-        $clientes = Cliente::all();
-        $result = DB::table('fac_enc')
-            ->select(DB::raw('id_fac_enc, 1 as nofac'))
-            ->rightJoin('cliente', 'cliente.id_cliente', '=', 'fac_enc.id_cliente')
-            ->groupBy('id_fac_enc')
-            ->get();
-        $productos = VistaProducto::all();
-        // $productos = DB::table('producto')
-        // ->select(DB::raw('producto.id_producto as id, producto.descripcion as prod, marca.descripcion as marca, categoria.descripcion as categoria'))
-        //     ->join('marca','marca.id_marca','=','producto.id_marca')
-        //     ->join('categoria','categoria.id_categoria','=','producto.id_categoria')
-        //     //->select('producto.id_producto as id', 'producto.descripcion as prod', 'marca.descripcion as marca', 'categoria.descripcion as categoria')
-        //     ->where('producto.descripcion', 'like', '%%')
-        //     ->orWhere('marca.descripcion', 'like', '%%')
-        //     ->orWhere('categoria.descripcion', 'like', '%%')
-        //     ->get();
-        return view('facturas.create',compact('facturas','clientes','result','productos'));
+        //
     }
 
     /**
