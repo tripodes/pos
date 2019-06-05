@@ -78,30 +78,5 @@
             </div>
         </main>
     </div>
-    <script type="text/javascript">
-    // var cont = 0;
-    // var arr_canti=[];
-    // var v_canti = 0;
-    // v_canti= $('#cantidad').val();
-    // // input id=cantidad
-    // function agregarFila(){
-    //   document.getElementById("tablaproductos").insertRow(-1).innerHTML = '<td>'+v_canti+'</td><td></td><td></td><td></td>';
-    //   cont=cont++;
-    // }
-
-    function eliminarFila(){
-      // alert('esta en el javascript');
-      var table = document.getElementById("tablaproductos");
-      var rowCount = table.rows.length;
-      alert('fila no '+cont);
-      // //console.log(rowCount);
-      //
-      // if(rowCount <= 1)
-      //   alert('No se puede eliminar el encabezado');
-      // else
-      //   table.deleteRow(rowCount -1);
-    }
-        @yield('jscript')
-    </script>
 </body>
 </html>

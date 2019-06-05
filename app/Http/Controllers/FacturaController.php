@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use App\fac_enc;
+use App\fac_det;
 use App\Cliente;
 use App\VistaProducto;
 
@@ -32,22 +33,8 @@ class FacturaController extends Controller
     {
         $facturas = fac_enc::all();
         $clientes = Cliente::all();
-        $result = DB::table('fac_enc')
-            ->select(DB::raw('id_fac_enc, 1 as nofac'))
-            ->rightJoin('cliente', 'cliente.id_cliente', '=', 'fac_enc.id_cliente')
-            ->groupBy('id_fac_enc')
-            ->get();
         $productos = VistaProducto::all();
-        // $productos = DB::table('producto')
-        // ->select(DB::raw('producto.id_producto as id, producto.descripcion as prod, marca.descripcion as marca, categoria.descripcion as categoria'))
-        //     ->join('marca','marca.id_marca','=','producto.id_marca')
-        //     ->join('categoria','categoria.id_categoria','=','producto.id_categoria')
-        //     //->select('producto.id_producto as id', 'producto.descripcion as prod', 'marca.descripcion as marca', 'categoria.descripcion as categoria')
-        //     ->where('producto.descripcion', 'like', '%%')
-        //     ->orWhere('marca.descripcion', 'like', '%%')
-        //     ->orWhere('categoria.descripcion', 'like', '%%')
-        //     ->get();
-        return view('facturas.create',compact('facturas','clientes','result','productos'));
+        return view('facturas.create',compact('facturas','clientes','productos'));
     }
 
     /**
@@ -58,7 +45,19 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      return $request->all();
+      $factura_enc = new fac_enc;
+      $factura_det = new fac_det;
+      $factura_enc->numero = $request->input('nofac');
+      $factura_enc->id_cliente = $request->input('idcliente');
+      $factura_enc->save();
+      foreach ($factura_det as $detalle) {
+        $detalle->id_fac_enc = $request->input('nofac');
+        $detalle->id_producto = $request->input('idproducto[]');
+        $detalle->cantidad = $request->input('cantproducto[]');
+        $detalle->save();
+      }
+      return redirect()->action('FacturaController@index');
     }
 
     /**

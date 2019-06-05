@@ -14,7 +14,7 @@
 				<label for="activo">Activo</label>
 				@if ($categoria->activo == 1)<input type="checkbox" name="activo" checked="">
 				@else <input type="checkbox" name="activo" {{ old('activo') ? 'checked' : '' }} >
-       			@endif
+       	@endif
 			</div>
 			<button type="submit" class="btn btn-primary">Guardar</button>
 		</form>

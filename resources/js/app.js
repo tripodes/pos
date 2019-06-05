@@ -54,18 +54,20 @@ new Vue({
   },
   data: {
     clientes: [],
+    cid: '',
     cnit: '',
     cnom: '',
     cdir: '',
     productos: [],
-    pre: '',
-    pro: '',
-    existencia: '',
     busca: '',
-    cont: 0,
-    ListaProductos:[],
     idpro: 0,
-    canti: ''
+    pre: 0,
+    pro: '',
+    existencia: 0,
+    canti: 0,
+    cont: 0,
+    total: 0,
+    ListaProductos:[]
   },
   methods:
   {
@@ -75,6 +77,7 @@ new Vue({
       });
     },
     verCliente(index){
+      this.cid = this.clientes[index].id_cliente;
       this.cnit = this.clientes[index].nit;
       this.cnom = this.clientes[index].nombre;
       this.cdir = this.clientes[index].direccion;
@@ -91,19 +94,16 @@ new Vue({
       this.existencia = producto.existencia;
     },
     agregarFila(){
-      //alert(this.idpro+' '+this.pre+' '+this.canti);
-      this.cont=this.cont+1;
-      document.getElementById("tablaproductos").insertRow(-1).innerHTML = '<tr id="'+this.cont+'"><td>'+this.pre+'</td><td>'+this.pro+'</td><td>'+this.canti+'</td><td><a href="#" class="btn btn-danger" onclick="eliminarFila();">-</a></td></tr>';
+      if(this.canti != "" && this.canti > 0){
+        this.ListaProductos.push({idpro: this.idpro, pre: this.pre, pro: this.pro,
+          existencia: this.existencia, cantidad: this.canti, cont: this.cont+1, subtotal: this.pre*this.canti});
+          this.cont=this.cont+1;
+      }else{
+        alert('Valor invalido');
+      }
     },
-    eliFila(){
-      var table = document.getElementById("tablaproductos");
-      var rowCount = table.rows.length;
-      //console.log(rowCount);
-    //   //
-    //   // if(rowCount <= 1)
-    //   //   alert('No se puede eliminar el encabezado');
-    //   // else
-    //   //   table.deleteRow(rowCount -1);
+    eliminarFila(index){
+      this.ListaProductos.splice(index, 1);
     }
   },
   computed: {
@@ -111,6 +111,13 @@ new Vue({
       return this.productos.filter((producto) => {
         return producto.producto.match(this.busca);
       });
+    },
+    sumarSubtotal(){
+      this.total = 0;
+      for (produc of this.ListaProductos){
+        this.total = this.total + produc.subtotal;
+      }
+      return this.total;
     }
   }
 });
