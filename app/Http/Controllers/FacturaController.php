@@ -45,7 +45,7 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-      return $request->all();
+      //return $request->all();
       $factura_enc = new fac_enc;
       $factura_det = new fac_det;
       $factura_enc->numero = $request->input('nofac');
