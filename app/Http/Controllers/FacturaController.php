@@ -20,7 +20,11 @@ class FacturaController extends Controller
      */
     public function index()
     {
-        $facturas = fac_enc::all();
+        $facturas = DB::table('fac_enc as fe')
+                    ->join('cliente as cli','cli.id_cliente','fe.id_cliente')
+                    ->select('serie','id_fac_enc','nombre','total')
+                    ->orderBy('id_fac_enc')
+                    ->get();
         return view('facturas.index',compact('facturas'));
     }
 
@@ -34,7 +38,8 @@ class FacturaController extends Controller
         $facturas = fac_enc::all();
         $clientes = Cliente::all();
         $productos = VistaProducto::all();
-        return view('facturas.create',compact('facturas','clientes','productos'));
+        $correlativo = DB::table('fac_enc')->max('id_fac_enc');
+        return view('facturas.create',compact('facturas','clientes','productos','correlativo'));
     }
 
     /**
@@ -47,15 +52,30 @@ class FacturaController extends Controller
     {
       //return $request->all();
       $factura_enc = new fac_enc;
-      $factura_det = new fac_det;
       $factura_enc->numero = $request->input('nofac');
       $factura_enc->id_cliente = $request->input('idcliente');
+      $factura_enc->total = $request->input('total');
       $factura_enc->save();
-      foreach ($factura_det as $detalle) {
-        $detalle->id_fac_enc = $request->input('nofac');
-        $detalle->id_producto = $request->input('idproducto[]');
-        $detalle->cantidad = $request->input('cantproducto[]');
-        $detalle->save();
+
+      $id_producto = $_POST['idproducto'];
+			$cant_producto = $_POST['cantproducto'];
+
+			$array_id=array();
+			$array_cant=array();
+
+			foreach($id_producto as $fila_id => $valor_id) {
+				array_push($array_id, $valor_id) ;
+			}
+			foreach($cant_producto as $fila_cant => $valor_cant) {
+				array_push($array_cant, $valor_cant) ;
+			}
+
+      for ($i=0; $i < count($request->input('idproducto')) ; $i++) {
+          $factura_det = new fac_det;
+          $factura_det->id_fac_enc = $request->input('nofac');
+          $factura_det->id_producto = $array_id[$i];
+          $factura_det->cantidad = $array_cant[$i];
+          $factura_det->save();
       }
       return redirect()->action('FacturaController@index');
     }
@@ -68,7 +88,20 @@ class FacturaController extends Controller
      */
     public function show($id)
     {
-        //
+        $factura = DB::table('fac_enc as fe')
+                    ->join('cliente as cli','cli.id_cliente','=','fe.id_cliente')
+                    ->select('fe.id_fac_enc','nit','nombre','direccion')
+                    ->where('fe.id_fac_enc','=',$id)
+                    ->get();
+        $detalles = DB::table('fac_enc as fe')
+                    ->join('fac_det as fd','fe.id_fac_enc','=','fd.id_fac_enc')
+                    ->join('producto as p','p.id_producto','=','fd.id_producto')
+                    ->join('marca as m','m.id_marca','=','p.id_marca')
+                    ->join('categoria as c','c.id_categoria','=','p.id_categoria')
+                    ->where('fd.id_fac_enc','=',$id)
+                    ->select('cantidad','c.descripcion as categoria','p.descripcion as producto','m.descripcion as marca','precio_venta','fe.total')
+                    ->get();
+        return view('Facturas.show', compact('factura','detalles'));
     }
 
     /**
@@ -79,7 +112,20 @@ class FacturaController extends Controller
      */
     public function edit($id)
     {
-        //
+      $factura = DB::table('fac_enc as fe')
+                  ->join('cliente as cli','cli.id_cliente','=','fe.id_cliente')
+                  ->where('fe.id_fac_enc','=',$id)
+                  ->select('fe.id_fac_enc as id_fac_enc','cli.id_cliente','nit','nombre','direccion')
+                  ->get();
+      $detalles = DB::table('fac_enc as fe')
+                  ->join('fac_det as fd','fe.id_fac_enc','=','fd.id_fac_enc')
+                  ->join('producto as p','p.id_producto','=','fd.id_producto')
+                  ->join('marca as m','m.id_marca','=','p.id_marca')
+                  ->join('categoria as c','c.id_categoria','=','p.id_categoria')
+                  ->where('fd.id_fac_enc','=',$id)
+                  ->select('cantidad','c.descripcion as categoria','fd.id_producto','p.descripcion as producto','m.descripcion as marca','precio_venta','fe.total')
+                  ->get();
+      return view('Facturas.edit', compact('factura','detalles'));
     }
 
     /**
@@ -91,7 +137,29 @@ class FacturaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $id_producto = $_POST['idproducto'];
+      $cant_producto = $_POST['cantidad'];
+      $cant_vieja = $_POST['cantvieja'];
+
+      $array_id=array();
+      $array_cant=array();
+      $array_cvieja=array();
+
+      foreach($id_producto as $fila_id => $valor_id) {
+        array_push($array_id, $valor_id) ;
+      }
+      foreach($cant_producto as $fila_cant => $valor_cant) {
+        array_push($array_cant, $valor_cant) ;
+      }
+      foreach($cant_vieja as $fila_canti => $valor_canti) {
+        array_push($array_cvieja, $valor_canti) ;
+      }
+      for ($i=0; $i < count($request->input('idproducto')) ; $i++) {
+          DB::table('producto')->where('id_producto','=',$array_id[$i])->increment('existencia', $array_cvieja[$i]);
+          DB::table('producto')->where('id_producto','=',$array_id[$i])->decrement('existencia', $array_cant[$i]);
+          DB::table('fac_det')->where('id_fac_enc','=',$request->input('idfactura'))->where('id_producto','=',$array_id[$i])->update(['cantidad' => $array_cant[$i]]);
+      }
+      return redirect()->action('FacturaController@index');
     }
 
     /**

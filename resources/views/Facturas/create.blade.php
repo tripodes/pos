@@ -1,25 +1,21 @@
 @extends('layouts.facturas')
 @section('content')
-<form class="" action="/facturas" method="post">
-  @csrf
-  <div class="row" id="create_factura">
+<div class="row" id="create_factura">
+  <form class="" action="/facturas" method="post">
+    @csrf
     <div class="col-md-7">
       <div class="d-flex justify-content-between col-md-12">
         <div class="col-md-4">
           <label for="nofac">No Factura</label>
-          @if (empty($facturas->id_fac_enc))
-            <input type="text" name="nofac" readonly="readonly" class="form-control">
+          @if (empty($correlativo))
+            <input type="text" name="nofac" readonly="readonly" class="form-control" value="1">
   				@else
-            <input type="text" name="nofac" readonly="readonly" class="form-control">
+            <input type="text" name="nofac" readonly="readonly" class="form-control" value="{{$correlativo+1}}">
          	@endif
-        </div>
-        <div>
-          {{-- <label for="serie">Serie</label>
-          <input type="text" name="serie" class="form-control"> --}}
         </div>
         <div class="col-md-4">
           <label for="fecha">Fecha</label>
-          <input type="text" name="fecha" readonly="readonly" class="form-control">
+          <input type="text" name="fecha" readonly="readonly" class="form-control" value="{{ date('d/m/Y') }} ">
         </div>
       </div>
       <div class="form-group">
@@ -32,7 +28,7 @@
                 </button>
               </span>
               <input type="hidden" name="idcliente" v-model="cid">
-              <input type="text" name="cliente" class="form-control" v-model="cnom">
+              <input type="text" name="cliente" class="form-control" v-model="cnom" placeholder="Coloque 0 para consumidor final">
             </div>
           </div>
         </div>
@@ -135,6 +131,7 @@
             </tr>
           </tbody>
         </table>
+        <a href="{{ action('FacturaController@index')}}" class="btn btn-secondary">Regresar</a>
       </div>
     </div>
     <div class="col-md-5">
@@ -160,6 +157,7 @@
           <tr>
             <td colspan="3"><strong> Total:</td>
               <td v-show="total>0">@{{sumarSubtotal}}</td><strong>
+                <input type="hidden" name="total" v-model="total">
               </tr>
             </tbody>
           </table>

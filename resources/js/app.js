@@ -1,48 +1,3 @@
-// new Vue({
-// 	el: '#crud',
-// 	created: function(){
-// 		this.getKeeps();
-// 	},
-// 	data: {
-// 		keeps: []
-// 	},
-// 	methods: {
-// 		getKeeps: function() {
-// 			var urlKeeps = 'tasks';
-// 			axios.get(urlKeeps).then(response => {
-// 				this.keeps = response.data
-// 			});
-// 		},
-// 		deleteKeep: function(keep){
-// 			var urlKeeps = 'tasks/' + keep.id;
-// 			axios.delete(urlKeeps).then( res => {
-// 				this.getKeeps(); //
-// 				toastr.success('Eliminado Correctamente');
-// 			});
-// 		}
-// 	}
-// });
-
-
-// new Vue({
-//   el: '#listaclientes',
-//   created: function(){
-//     this.getClientes();
-//   },
-//   data: {
-//     clientes: [],
-//   },
-//   methods: {
-//     getClientes: function(){
-//       var urlClientes = 'clientes';
-//       axios.get(urlClientes).then(response =>{
-//         this.clientes = response.data
-//       });
-//     }
-//   }
-// });
-
-
 var url = 'http://localhost:8000/';
 var urlClientes = url + 'clientes';
 var urlProductos = url + 'productos';
@@ -107,7 +62,7 @@ new Vue({
     }
   },
   computed: {
-    FiltroProducto: function(){
+    FiltroProducto(){
       return this.productos.filter((producto) => {
         return producto.producto.match(this.busca);
       });
@@ -118,6 +73,40 @@ new Vue({
         this.total = this.total + produc.subtotal;
       }
       return this.total;
+    }
+  }
+});
+
+new Vue({
+  el: '#editar_factura',
+  created: function(){
+    this.getProductos();
+  },
+  data: {
+    busca: '',
+    lista: false,
+    activo: true,
+    productos: []
+  },
+  methods: {
+    activar(){
+      this.activo = !this.activo;
+    },
+    ver(){
+      this.lista = !this.lista;
+    },
+    getProductos(){
+      axios.get(urlProductos).then(response => {
+        this.productos = response.data;
+        console.log(response.data);
+      })
+    }
+  },
+  computed: {
+    FiltroProducto(){
+      return this.productos.filter((producto) => {
+        return producto.producto.match(this.busca);
+      });
     }
   }
 });
