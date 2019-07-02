@@ -31,8 +31,3 @@ Route::resource('facturas','FacturaController');
 Route::resource('clientes','ClienteController');
 
 Route::resource('productos','VistaProductoController');
-
-// Route::get('clientes',function(){
-// 	$clientes = Cliente::get();
-// 	return $clientes;
-// });

@@ -1,8 +1,8 @@
 @extends('layouts.facturas')
 @section('content')
-<div class="row" id="create_factura">
-  <form class="" action="/facturas" method="post">
+<form class="" action="/facturas" method="POST">
     @csrf
+  <div class="row col-md-12" id="create_factura">
     <div class="col-md-7">
       <div class="d-flex justify-content-between col-md-12">
         <div class="col-md-4">
@@ -49,6 +49,8 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+              {{-- <a href=" {{ action('ClienteController@create') }} " class="btn btn-success" target="_blank">+</a> --}}
+              <a href="#" class="btn btn-success" onClick="window.open('{{ action('CategoriaController@create')}}','popup', 'width=400px,height=400px')">+</a>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -89,13 +91,16 @@
               </div>
             </div>
             <div class="modal-body col-md-12 row center">
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <input type="text" v-model="existencia" class="form-control" readonly="readonly">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
                 <input type="text" v-model="pre" class="form-control" readonly="readonly">
               </div>
-              <div class="col-md-4">
+              <div class="col-md-3">
+                <input type="number" class="form-control focus" name="" @blur="focusOut" @focus="focusIn" v-model.number="canti">
+              </div>
+              <div class="col-md-3">
                 <input type="number" class="form-control focus" name="" autofocus v-model.number="canti">
               </div><br><br>
             </div>
@@ -162,9 +167,8 @@
             </tbody>
           </table>
           <button type="submit" name="button" class="btn btn-success">Vender</button>
+          <a href="#" class="btn btn-warning" onClick="window.open('{{ action('CategoriaController@create')}}','popup', 'width=400px,height=400px')">Cotizar</a>
         </div>
-      </div>
+  </div>
 </form>
-@endsection
-@section('jscript')
 @endsection

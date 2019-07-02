@@ -50,10 +50,15 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
-      //return $request->all();
       $factura_enc = new fac_enc;
       $factura_enc->numero = $request->input('nofac');
-      $factura_enc->id_cliente = $request->input('idcliente');
+      if ($request->input('cliente') == '0') {
+        $cliente = 7;
+      }else{
+        $cliente = $request->input('idcliente');
+      }
+
+      $factura_enc->id_cliente = $cliente;
       $factura_enc->total = $request->input('total');
       $factura_enc->save();
 
@@ -137,6 +142,8 @@ class FacturaController extends Controller
      */
     public function update(Request $request, $id)
     {
+      return $request;
+      /* Actualizacion de datos existentes*/
       $id_producto = $_POST['idproducto'];
       $cant_producto = $_POST['cantidad'];
       $cant_vieja = $_POST['cantvieja'];
@@ -154,11 +161,36 @@ class FacturaController extends Controller
       foreach($cant_vieja as $fila_canti => $valor_canti) {
         array_push($array_cvieja, $valor_canti) ;
       }
+
       for ($i=0; $i < count($request->input('idproducto')) ; $i++) {
           DB::table('producto')->where('id_producto','=',$array_id[$i])->increment('existencia', $array_cvieja[$i]);
           DB::table('producto')->where('id_producto','=',$array_id[$i])->decrement('existencia', $array_cant[$i]);
           DB::table('fac_det')->where('id_fac_enc','=',$request->input('idfactura'))->where('id_producto','=',$array_id[$i])->update(['cantidad' => $array_cant[$i]]);
       }
+
+      /* Insercion de datos */
+      if ($request->has('idsproducto')) {
+        $ids_producto = $_POST['idsproducto'];
+        $cantis_producto = $_POST['cantproducto'];
+
+        $array_ids=array();
+        $array_cantis=array();
+
+        foreach($ids_producto as $fila_ids => $valor_ids) {
+          array_push($array_ids, $valor_ids) ;
+        }
+        foreach($cantis_producto as $fila_cantis => $valor_cantis) {
+          array_push($array_cantis, $valor_cantis) ;
+        }
+
+        for ($i=0; $i < count($request->input('idsproducto')) ; $i++) {
+          DB::table('fac_det')->updateOrInsert(['id_producto' => $array_ids[$i], 'id_fac_enc' => $request->input('idfactura')],['cantidad' => $array_cantis[$i]]);
+          DB::table('producto')->where('id_producto','=',$array_ids[$i])->decrement('existencia', $array_cantis[$i]);
+          // DB::table('producto')->where('id_producto','=',$array_ids[$i])->increment('existencia', $array_cvieja[$i]);
+        }
+      }
+
+
       return redirect()->action('FacturaController@index');
     }
 

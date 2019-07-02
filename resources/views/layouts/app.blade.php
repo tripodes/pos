@@ -71,12 +71,9 @@
                 </div>
             </div>
         </nav>
-
-        <main class="py-4">
-            <div class="container">
-                @yield('content')
-            </div>
-        </main>
+          <div class="container">
+              @yield('content')
+          </div>
     </div>
 </body>
 </html>
