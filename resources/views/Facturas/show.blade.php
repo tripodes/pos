@@ -42,6 +42,6 @@
 			<div></div>
 			<div><td>Q{{$detalle->total}}</td></div>
 		</div>
-		<a href=" {{ action('FacturaController@index') }} " class="btn btn-secondary">Regresar</a>
+		<a href="{{ URL::previous() }}" class="btn btn-secondary">Regresar</a>
 	</div>
 @endsection

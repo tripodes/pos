@@ -23,6 +23,7 @@ class FacturaController extends Controller
         $facturas = DB::table('fac_enc as fe')
                     ->join('cliente as cli','cli.id_cliente','fe.id_cliente')
                     ->select('serie','id_fac_enc','nombre','total')
+                    ->where('fe.activo','=',1)
                     ->orderBy('id_fac_enc')
                     ->get();
         return view('facturas.index',compact('facturas'));
@@ -53,13 +54,14 @@ class FacturaController extends Controller
       $factura_enc = new fac_enc;
       $factura_enc->numero = $request->input('nofac');
       if ($request->input('cliente') == '0') {
-        $cliente = 7;
+        $cliente = 1;
       }else{
         $cliente = $request->input('idcliente');
       }
 
       $factura_enc->id_cliente = $cliente;
       $factura_enc->total = $request->input('total');
+      $factura_enc->activo = 1;
       $factura_enc->save();
 
       $id_producto = $_POST['idproducto'];
@@ -142,7 +144,6 @@ class FacturaController extends Controller
      */
     public function update(Request $request, $id)
     {
-      return $request;
       /* Actualizacion de datos existentes*/
       $id_producto = $_POST['idproducto'];
       $cant_producto = $_POST['cantidad'];
@@ -200,8 +201,19 @@ class FacturaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(fac_enc $factura)
     {
-        //
+      DB::table('fac_enc')->where('id_fac_enc', $factura->id_fac_enc)->update(['activo' => 0]);
+      return redirect()->action('FacturaController@index');
+    }
+    public function inactivas()
+    {
+      $facturas = DB::table('fac_enc as fe')
+                  ->join('cliente as cli','cli.id_cliente','fe.id_cliente')
+                  ->select('serie','id_fac_enc','nombre','total')
+                  ->where('fe.activo','=',0)
+                  ->orderBy('id_fac_enc')
+                  ->get();
+      return view('facturas.inactivas_index',compact('facturas'));
     }
 }

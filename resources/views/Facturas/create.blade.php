@@ -35,25 +35,35 @@
         <div class="d-flex justify-content-between">
           <div class="col-md-4">
             <label for="nit">Nit</label>
-            <input type="text" name="nit" class="form-control" v-model="cnit">
+            <input type="text" name="nit" class="form-control" v-model="cnit" readonly>
           </div>
           <div class="col-md-8">
             <label for="dir">Direccion</label>
-            <input type="text" name="dir" class="form-control" v-model="cdir">
+            <input type="text" name="dir" class="form-control" v-model="cdir" readonly>
           </div>
         </div>
       </div>
       <!-- Ventana Modal para el Cliente-->
-      <div class="modal fade" id="ModalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="ModalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-toggle="modal">
         <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
-              {{-- <a href=" {{ action('ClienteController@create') }} " class="btn btn-success" target="_blank">+</a> --}}
-              <a href="#" class="btn btn-success" onClick="window.open('{{ action('CategoriaController@create')}}','popup', 'width=400px,height=400px')">+</a>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <div class="d-flex justify-content-between col-md-12">
+                <div class="">
+                    <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+                </div>
+                <div class="col-md-8">
+                  <input type="text" class="form-control" v-model="busca2" placeholder="Buscar Cliente por Nombre">
+                </div>
+                <div class="">
+                  <a href="#" onClick="window.open('{{ action('ClienteController@create')}}','popup', 'width=400px,height=400px')" class="btn btn-success">Agregar</a>
+                </div>
+                <div class="">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              </div>
             </div>
             <div class="modal-body">
               <div class="form-group">
@@ -65,11 +75,24 @@
                     <td></td>
                   </thead>
                   <tbody>
-                    <tr v-for="(cliente, index) in clientes">
+                    {{-- <tr v-for="(cliente, index) in FiltroCliente">
                       <td>@{{cliente.nit}}</td>
                       <td>@{{cliente.nombre}}</td>
                       <td>@{{cliente.direccion}}</td>
-                      <td><a href="" class="btn btn-primary" data-dismiss="modal" aria-label="Close" v-on:click.prevent="verCliente(index)">Seleccionar</a></td>
+                      <td><a href="" class="btn btn-primary" data-dismiss="modal" aria-label="Close" data-toggle="modal" @click.prevent="verCliente(index)">Seleccionar</a></td>
+                    </tr>
+                    <tr v-for="producto in FiltroProducto">
+                      <td>@{{producto.producto}}</td>
+                      <td>@{{producto.marca}}</td>
+                      <td>@{{producto.categoria.toUpperCase()}}</td>
+                      <td><a href="" class="btn btn-success" data-toggle="modal" data-target="#ModalProducto" @click.prevent="verProducto(producto)">+</a></td>
+                      <td><a href="" class="btn btn-info" data-toggle="modal" data-target="#ModalProducto" @click.prevent="verProducto(producto)">*</a></td>
+                    </tr> --}}
+                    <tr v-for="cliente in FiltroCliente">
+                      <td>@{{cliente.nit}}</td>
+                      <td>@{{cliente.nombre}}</td>
+                      <td>@{{cliente.direccion}}</td>
+                      <td><a href="" class="btn btn-primary" data-toggle="modal" data-dismiss="modal" aria-label="Close" @click.prevent="verCliente(cliente)">Seleccionar</a></td>
                     </tr>
                   </tbody>
                 </table>
@@ -91,16 +114,13 @@
               </div>
             </div>
             <div class="modal-body col-md-12 row center">
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <input type="text" v-model="existencia" class="form-control" readonly="readonly">
               </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <input type="text" v-model="pre" class="form-control" readonly="readonly">
               </div>
-              <div class="col-md-3">
-                <input type="number" class="form-control focus" name="" @blur="focusOut" @focus="focusIn" v-model.number="canti">
-              </div>
-              <div class="col-md-3">
+              <div class="col-md-4">
                 <input type="number" class="form-control focus" name="" autofocus v-model.number="canti">
               </div><br><br>
             </div>
@@ -114,9 +134,44 @@
         </div>
       </div>
       <!-- Ventana Modal para el Producto-->
+      <!-- Ventana Modal para la Venta-->
+      <div class="modal fade" id="ModalVenta" role="dialog" aria-labelledby="exampleModalProducto" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="row col-md-12 text-center">
+                <div class="col-md-4">Total a Pagar</div>
+                <div class="col-md-4">Efectivo</div>
+                <div class="col-md-4">Vuelto</div>
+              </div>
+            </div>
+            <div class="modal-body col-md-12 row center">
+              <div class="col-md-4">
+                <input type="text" class="form-control" readonly id="montoventa" v-model="sumarSubtotal">
+              </div>
+              <div class="col-md-4">
+                <input type="number" class="form-control" autofocus id="pagado" v-model="pagado" @keyup="vueltoVenta">
+              </div>
+              <div class="col-md-4">
+                <input type="number" class="form-control focus" id="vuelto" readonly v-model="vuelto">
+              </div><br><br>
+            </div>
+            <div class="modal-footer">
+              <td><input type="radio" name="tipo_pago" value="contado" checked>Contado</td>
+              <td><input type="radio" name="tipo_pago" value="credito">Credito</td>
+              {{-- <td><a href="#" class="btn btn-success" data-dismiss="modal" aria-label="Close">Pagar</a> </td> --}}
+              <td><button type="submit" name="button" class="btn btn-success">Pagar</button></td>
+              <td><a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</a> </td>
+              {{-- <td><a href="#" class="btn btn-primary" data-dismiss="modal" aria-label="Close" v-on:click.prevent="agregarFila">Agregar</a></td>
+              <td><a href="#" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">Cancelar</a></td> --}}
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Ventana Modal para la Venta-->
       <div class="input-group col-md-12">
-        <input type="text" class="form-control" v-model="busca">
-        {{-- style="text-transform:uppercase" onKeyUp="this.value=this.value.toUpperCase();"> --}}
+        <input type="text" class="form-control text-uppercase" onkeyup="this.value=this.value.toUpperCase();" v-model="busca" placeholder="Buscar Nombre del Producto en Mayuscula">
+        {{-- style="text-transform:uppercase" onKeyUp="this.value=this.value.toUpperCase();" class="text-uppercase"> --}}
         <span class="input-group-btn">
           <button class="btn btn-info disabled" type="button">Buscar</button>
         </span>
@@ -125,7 +180,7 @@
             <td>Producto</td>
             <td>Marca</td>
             <td>Categoria</td>
-            <td>Agregar</td>
+            <td colspan="2">Acciones</td>
           </thead>
           <tbody>
             <tr v-for="producto in FiltroProducto">
@@ -133,6 +188,7 @@
               <td>@{{producto.marca}}</td>
               <td>@{{producto.categoria.toUpperCase()}}</td>
               <td><a href="" class="btn btn-success" data-toggle="modal" data-target="#ModalProducto" @click.prevent="verProducto(producto)">+</a></td>
+              <td><a href="" class="btn btn-info" data-toggle="modal" data-target="#ModalProducto" @click.prevent="verProducto(producto)">*</a></td>
             </tr>
           </tbody>
         </table>
@@ -165,9 +221,15 @@
                 <input type="hidden" name="total" v-model="total">
               </tr>
             </tbody>
+
           </table>
-          <button type="submit" name="button" class="btn btn-success">Vender</button>
-          <a href="#" class="btn btn-warning" onClick="window.open('{{ action('CategoriaController@create')}}','popup', 'width=400px,height=400px')">Cotizar</a>
+          {{-- subir antes del cierre de table cuando ya este --}}
+          <td v-show="total>0">
+            <a href="#" class="btn btn-success" data-toggle="modal" data-target="#ModalVenta">Vender</a>
+            <a href="#" class="btn btn-warning" onClick="window.open('{{ action('CategoriaController@create')}}','popup', 'width=400px,height=400px')">Cotizar</a>
+          </td>
+          {{-- <button type="submit" name="button" class="btn btn-success">Vender</button> --}}
+          {{-- <button class="btn btn-success" data-toggle="modal" data-target="#ModalVenta">Vender --}}
         </div>
   </div>
 </form>

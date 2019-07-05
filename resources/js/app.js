@@ -13,6 +13,7 @@ new Vue({
     cnit: '',
     cnom: '',
     cdir: '',
+    busca2: '',
     productos: [],
     busca: '',
     idpro: 0,
@@ -22,6 +23,9 @@ new Vue({
     canti: 0,
     cont: 0,
     total: 0,
+    tot: 0,
+    pagado: 0,
+    vuelto: 0,
     ListaProductos:[]
   },
   methods:
@@ -31,11 +35,17 @@ new Vue({
         this.clientes = response.data
       });
     },
-    verCliente(index){
-      this.cid = this.clientes[index].id_cliente;
-      this.cnit = this.clientes[index].nit;
-      this.cnom = this.clientes[index].nombre;
-      this.cdir = this.clientes[index].direccion;
+    // verCliente(index){
+    //   this.cid = this.clientes[index].id_cliente;
+    //   this.cnit = this.clientes[index].nit;
+    //   this.cnom = this.clientes[index].nombre;
+    //   this.cdir = this.clientes[index].direccion;
+    // },
+    verCliente(cliente){
+      this.cid = cliente.id_cliente;
+      this.cnit = cliente.nit;
+      this.cnom = cliente.nombre;
+      this.cdir = cliente.direccion;
     },
     getProductos(){
       axios.get(urlProductos).then(response => {
@@ -59,12 +69,20 @@ new Vue({
     },
     eliminarFila(index){
       this.ListaProductos.splice(index, 1);
-    }
+    },
+    vueltoVenta(){
+      this.vuelto = this.total - this.pagado;
+    },
   },
   computed: {
     FiltroProducto(){
       return this.productos.filter((producto) => {
         return producto.producto.match(this.busca);
+      });
+    },
+    FiltroCliente(){
+      return this.clientes.filter((cliente) => {
+        return cliente.nombre.match(this.busca2);
       });
     },
     sumarSubtotal(){

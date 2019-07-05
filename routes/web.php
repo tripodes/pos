@@ -26,6 +26,8 @@ Route::resource('empresa','EmpresaController', ['except' => ['create', 'store', 
 
 Route::resource('usuarios','UserController');
 
+Route::get('/facturas/inactivas','FacturaController@inactivas');
+
 Route::resource('facturas','FacturaController');
 
 Route::resource('clientes','ClienteController');
