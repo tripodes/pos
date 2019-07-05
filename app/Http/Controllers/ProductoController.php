@@ -70,6 +70,7 @@ class ProductoController extends Controller
      */
     public function edit(producto $producto)
     {
+        /**dd($producto);*/
         return view('productos.edit',compact('producto'));
     }
 

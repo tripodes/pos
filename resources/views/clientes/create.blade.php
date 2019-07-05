@@ -15,7 +15,7 @@
 				<label for="telefono">Numero telefonico</label>
 				<input type="numerico" name="telefono" class="form-control">
 			</div>
-			<button type="submit" class="btn btn-primary">Guardar</button>
+			<button type="submit" class="btn btn-success">Guardar</button>
 		</form>
 	</div>
 </div>

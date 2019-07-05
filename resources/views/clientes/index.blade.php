@@ -1,7 +1,7 @@
 @extends('layouts.clientes')
 @section('title',' - Listado')
 @section('content')
-<a href=" {{ action('clientecontroller@create') }} " class="btn btn-primary">Crear</a><br><br>
+<a href="{{ action('clientecontroller@create') }}" class="btn btn-primary">Crear</a><br><br>
 <table class="table table-striped">
 	<thead>
 		<td class="text-left">Numero de nit</td>

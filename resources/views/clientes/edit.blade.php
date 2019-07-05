@@ -18,9 +18,7 @@
 				<input type="text" name="direccion" class="form-control" value="{{$cliente->direccion}}">
 
 				<label for="telefono">Numero telefonico</label>
-				<input type="numerico" name="telefono" class="form-control" value="{{$cliente->telefono}}">
-
-			
+				<input type="numerico" name="telefono" class="form-control" value="{{$cliente->telefono}}">	
 			</div>
 			<div class="form-group col-md">
 				<label for="activo">Activo</label>
