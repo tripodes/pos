@@ -26,7 +26,7 @@
 				@else <input type="checkbox" name="activo" {{ old('activo') ? 'checked' : '' }} >
        			@endif
 			</div>
-			<button type="submit" class="btn btn-primary">Guardar</button>
+			<button type="submit" class="btn btn-primary" >Guardar</button>
 		</form>
 	</div>
 </div>

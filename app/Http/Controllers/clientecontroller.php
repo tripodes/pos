@@ -57,7 +57,7 @@ class clientecontroller extends Controller
     public function show($id)
     {
         $cliente = cliente::where('id_cliente','=',$id)->firstOrFail();
-        return view('clientes.show',compact('cliente'));
+         return view('clientes.show',compact('cliente'));
     }
 
     /**

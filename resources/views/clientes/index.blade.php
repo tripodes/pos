@@ -22,7 +22,7 @@
 			<form action="/clientes/{{$cliente->id_cliente}}" method="post">
 				@csrf
 				@method('DELETE')
-				<th><button class="btn btn-danger" type="submit">Eliminar</button></th>
+				<th><button class="btn btn-danger" type="submit" >Eliminar</button></th>
 			</form>
 		</tr>
 		@endforeach
